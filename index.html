@@ -18,11 +18,11 @@ body{
   background-size:24px 24px;
 }
 
-/* ============ ПРОГРЕСС ============ */
+/* ПРОГРЕСС */
 .reading-progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(217,206,192,.3);z-index:200}
 .reading-progress-fill{height:100%;background:linear-gradient(90deg,#b87c4b,#d9a87a,#b87c4b);width:0%;transition:width .1s linear}
 
-/* ============ БОКОВОЕ МЕНЮ (слева, постоянно открыто) ============ */
+/* БОКОВОЕ МЕНЮ СЛЕВА */
 .sidebar{
   position:fixed;
   top:0;left:0;
@@ -145,7 +145,7 @@ body{
   line-height:1.5;
 }
 
-/* Кнопка свернуть меню */
+/* КНОПКА СВЕРНУТЬ */
 .menu-toggle-btn{
   position:fixed;
   top:20px;
@@ -169,7 +169,7 @@ body{
 .menu-toggle-btn:hover{background:#faf6f0}
 .menu-toggle-btn.closed{left:20px}
 
-/* ============ ОСНОВНОЙ КОНТЕНТ ============ */
+/* ОСНОВНОЙ КОНТЕНТ */
 .main-content{
   margin-left:280px;
   padding:80px 2rem 80px;
@@ -180,7 +180,7 @@ body{
 .wrapper{max-width:900px;margin:0 auto;position:relative;z-index:10}
 .card{background:#fff;border-radius:44px;box-shadow:0 30px 50px -20px rgba(0,0,0,.15);padding:3.5rem 3rem}
 
-/* ============ СЛАЙДЕР ============ */
+/* СЛАЙДЕР */
 .slider{
   position:relative;
   width:100%;
@@ -228,7 +228,7 @@ body{
 }
 .slider-dot.active{background:#c0392b;border-color:#fff;transform:scale(1.2)}
 
-/* ============ ТИТУЛ ============ */
+/* ТИТУЛ */
 .report-header{
   text-align:center;
   margin-bottom:2rem;
@@ -271,7 +271,7 @@ body{
   border-left:4px solid #c0392b;
 }
 
-/* ============ СЕКЦИИ ============ */
+/* СЕКЦИИ */
 .report-section{
   background:#f7f2ec;
   border-radius:28px;
@@ -321,7 +321,7 @@ body{
 .report-section p b{color:#b87c4b;font-weight:700}
 .report-section p:last-child{margin-bottom:0}
 
-/* ============ ПРАЙС ============ */
+/* ПРАЙС */
 .price-list{display:grid;gap:.65rem;margin:.5rem 0}
 .price-row{
   display:flex;
@@ -346,7 +346,7 @@ body{
 .price-value.free{color:#2d7a3e}
 .price-value.doc{color:#8b6b4b;font-style:italic;font-size:.95rem}
 
-/* ============ ЦИТАТА ============ */
+/* ЦИТАТА */
 .quote{
   background:linear-gradient(135deg,#faf6f0,#f5ede4);
   border-radius:24px;
@@ -390,7 +390,7 @@ body{
   margin-top:.6rem;
 }
 
-/* ============ ЧЁРНАЯ ПЕРЕКИДЫВАЛКА ЛИНИЯ ============ */
+/* ЧЁРНАЯ ПЕРЕКИДЫВАЛКА ЛИНИЯ */
 .line-logo-block{
   display:block;
   margin-top:1.8rem;
@@ -423,7 +423,7 @@ body{
 .line-logo-hint{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.9rem,2.2vw,1.05rem);color:#7a7a7a;margin-top:1.1rem;transition:color .3s}
 .line-logo-block:hover .line-logo-hint{color:#00A651}
 
-/* ============ ПРЕИМУЩЕСТВА ============ */
+/* ПРЕИМУЩЕСТВА */
 .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
 .adv-item{
   background:#fff;
@@ -456,7 +456,7 @@ body{
 }
 .adv-content p{font-size:.88rem;color:#4b5563;line-height:1.55;font-weight:400;margin:0}
 
-/* ============ ФАЙЛЫ ============ */
+/* ФАЙЛЫ */
 .tabs{
   display:flex;
   gap:8px;
@@ -522,7 +522,7 @@ body{
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
-/* ============ ВИДЕОАРХИВ ============ */
+/* ВИДЕОАРХИВ */
 .archive-steps{margin-top:1.2rem;padding-top:1.2rem;border-top:1px dashed #e2d9d0}
 .archive-steps ol{list-style:none;counter-reset:step}
 .archive-steps li{
@@ -560,7 +560,7 @@ body{
 }
 .blue-link:hover{background:rgba(192,57,43,.08);padding:0 4px;border-radius:4px}
 
-/* ============ КОНТАКТЫ ============ */
+/* КОНТАКТЫ */
 .contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
 .contact-card{
   background:#fff;
@@ -590,7 +590,7 @@ body{
 .contact-value a{color:#1e1e1e;text-decoration:none;transition:color .2s}
 .contact-value a:hover{color:#c0392b}
 
-/* ============ ФУТЕР ============ */
+/* ФУТЕР */
 .footer-note{
   margin-top:2rem;
   padding-top:1.5rem;
@@ -600,7 +600,7 @@ body{
   text-align:center;
 }
 
-/* ============ КНОПКИ ВВЕРХ / ВНИЗ ============ */
+/* КНОПКИ ВВЕРХ / ВНИЗ */
 .nav-buttons{
   position:fixed;
   bottom:24px;right:24px;
@@ -629,7 +629,7 @@ body{
 .nav-btn:hover{transform:scale(1.1)}
 .nav-btn:active{transform:scale(.95)}
 
-/* ============ ВКЛАДКИ-СТРАНИЦЫ ============ */
+/* СТРАНИЦЫ */
 .page{display:none}
 .page.active{display:block;animation:pageIn .4s ease}
 @keyframes pageIn{
@@ -637,7 +637,7 @@ body{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* ============ АДАПТИВ ============ */
+/* АДАПТИВ */
 @media(max-width:900px){
   .sidebar{width:260px}
   .main-content{margin-left:260px;padding:80px 1.5rem 60px}
@@ -652,7 +652,6 @@ body{
   .sidebar.open{transform:translateX(0)}
   .main-content{margin-left:0;padding:80px 1rem 60px}
   .menu-toggle-btn{left:14px}
-  .menu-toggle-btn.closed{left:14px}
   .card{padding:2rem 1.4rem;border-radius:32px}
   .report-section{padding:1.6rem 1.3rem;border-radius:22px}
   .report-header h1{font-size:1.6rem}
@@ -679,10 +678,8 @@ body{
 
 <div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
 
-<!-- КНОПКА СВЕРНУТЬ МЕНЮ -->
 <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Меню">‹</button>
 
-<!-- БОКОВОЕ МЕНЮ (СЛЕВА) -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-head">
     <a class="sidebar-logo" onclick="showPage('main')">
@@ -710,28 +707,36 @@ body{
   </div>
 </aside>
 
-<!-- ОСНОВНОЙ КОНТЕНТ -->
 <div class="main-content" id="mainContent">
 <div class="wrapper">
 <div class="card">
 
-  <!-- ================= СТРАНИЦА: ГЛАВНАЯ ================= -->
+  <!-- ГЛАВНАЯ -->
   <div class="page active" id="page-main">
 
-    <!-- СЛАЙДЕР -->
+    <!-- СЛАЙДЕР С ТВОИМИ 3 ФОТО -->
     <div class="slider" id="slider">
       <div class="slider-track">
         <div class="slide active">
-          <img src="slider1.jpg" 
+          <img src="https://ichip.ru/blobimgs/uploads/2018/11/home_security_27.jpg" 
                onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1600&q=80&auto=format&fit=crop'" 
-               alt="Монтаж камеры видеонаблюдения">
+               alt="Камеры видеонаблюдения">
           <div class="slide-caption">
             <b>Монтаж камер</b>
             Профессиональная установка на объектах любой сложности
           </div>
         </div>
         <div class="slide">
-          <img src="slider2.jpg" 
+          <img src="https://www.nts.su/upload/news/videonabl.jpg" 
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1551808525-51a94da548ce?w=1600&q=80&auto=format&fit=crop'" 
+               alt="Система видеонаблюдения">
+          <div class="slide-caption">
+            <b>Видеонаблюдение</b>
+            Системы под ключ для любых объектов
+          </div>
+        </div>
+        <div class="slide">
+          <img src="https://ir.ozone.ru/s3/multimedia-1-c/7512191832.jpg" 
                onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&auto=format&fit=crop'" 
                alt="Оборудование для видеонаблюдения">
           <div class="slide-caption">
@@ -743,24 +748,22 @@ body{
       <div class="slider-dots">
         <button class="slider-dot active" onclick="goToSlide(0)" aria-label="Слайд 1"></button>
         <button class="slider-dot" onclick="goToSlide(1)" aria-label="Слайд 2"></button>
+        <button class="slider-dot" onclick="goToSlide(2)" aria-label="Слайд 3"></button>
       </div>
     </div>
 
-    <!-- ТИТУЛ -->
     <div class="report-header">
       <div class="school">Бэст Сервис · с 2007 года</div>
       <h1>Видеонаблюдение,<br>техника и <em>сети</em></h1>
       <div class="subtitle">работаем с 2007 года · Новосибирск</div>
     </div>
 
-    <!-- О КОМПАНИИ -->
     <section class="report-section">
       <h2><span class="num">1</span>О компании</h2>
       <p><b>Наша компания работает с 2007 года.</b> Мы оказываем услуги по обслуживанию компьютерной техники, систем видеонаблюдения, проектированию, монтажу систем видеонаблюдения, локальных вычислительных и Wi-Fi сетей.</p>
       <p>Нами установлено <b>более 8000 камер</b> на объектах разных городов, на постоянном техническом обслуживании у нашей организации находится <b>более 1000 камер</b> и <b>более 300 компьютеров и серверов</b>, смонтировано <b>более сотни километров</b> оптоволоконных и медных линий.</p>
     </section>
 
-    <!-- ЦЕНА -->
     <section class="report-section">
       <h2><span class="num">2</span>Цены на услуги</h2>
 
@@ -786,7 +789,6 @@ body{
       </div>
     </section>
 
-    <!-- ЦИТАТА -->
     <section class="report-section">
       <div class="quote">
         Не верьте словам ни своим, ни чужим,<br>верьте только делам и своим, и чужим.
@@ -794,7 +796,6 @@ body{
       <div class="quote-author">— Лев Николаевич Толстой</div>
     </section>
 
-    <!-- ЧЁРНАЯ ПЕРЕКИДЫВАЛКА НА ЛИНИЯ -->
     <a href="https://devline.ru/" target="_blank" rel="noopener" class="line-logo-block">
       <div class="line-logo-inner">
         <div class="line-logo-text">
@@ -807,7 +808,7 @@ body{
 
   </div>
 
-  <!-- ================= СТРАНИЦА: ПРЕИМУЩЕСТВА ================= -->
+  <!-- ПРЕИМУЩЕСТВА -->
   <div class="page" id="page-advantages">
     <div class="report-header">
       <div class="school">Бэст Сервис · раздел</div>
@@ -862,7 +863,7 @@ body{
     </section>
   </div>
 
-  <!-- ================= СТРАНИЦА: ФАЙЛЫ (с вкладкой Видеоархив) ================= -->
+  <!-- ФАЙЛЫ -->
   <div class="page" id="page-files">
     <div class="report-header">
       <div class="school">Бэст Сервис · раздел</div>
@@ -877,7 +878,6 @@ body{
         <button class="tab" onclick="switchTab(2, this)">Получить видеоархив</button>
       </div>
 
-      <!-- ПАНЕЛЬ 1: ДОКУМЕНТЫ -->
       <div class="tab-panel active">
         <div class="files-grid">
           <a href="http://s.siteapi.org/466c41f8bbd035c/docs/cwznehv3m28s8wwc44k0swk4gsckw4" target="_blank" rel="noopener" class="file-card">
@@ -915,7 +915,6 @@ body{
         </div>
       </div>
 
-      <!-- ПАНЕЛЬ 2: ПРАЙС-ЛИСТЫ -->
       <div class="tab-panel">
         <div class="files-grid">
           <a href="http://s.siteapi.org/466c41f8bbd035c/docs/kspjcuxoe34c88k8sk0wkokkgcok0s" target="_blank" rel="noopener" class="file-card">
@@ -953,7 +952,6 @@ body{
         </div>
       </div>
 
-      <!-- ПАНЕЛЬ 3: ВИДЕОАРХИВ -->
       <div class="tab-panel">
         <p>Наша компания предоставляет выписку из видеоархива и непосредственный доступ к системе видеонаблюдения по заявлениям граждан либо представителей органов власти.</p>
         <p>Собственникам многоквартирных домов необходимо обратиться в Управляющую компанию либо к председателю ТСЖ. Представителям органов власти — обратиться по телефонам нашей компании.</p>
@@ -970,7 +968,7 @@ body{
     </section>
   </div>
 
-  <!-- ================= СТРАНИЦА: КОНТАКТЫ ================= -->
+  <!-- КОНТАКТЫ -->
   <div class="page" id="page-contacts">
     <div class="report-header">
       <div class="school">Бэст Сервис · раздел</div>
@@ -1003,7 +1001,6 @@ body{
     </section>
   </div>
 
-  <!-- ФУТЕР -->
   <div class="footer-note">
     © 2007–2025 Бэст Сервис · b383.ru · Все права защищены
   </div>
@@ -1012,18 +1009,15 @@ body{
 </div>
 </div>
 
-<!-- КНОПКИ ВВЕРХ / ВНИЗ -->
 <div class="nav-buttons">
   <button class="nav-btn" id="scrollDown" onclick="scrollToBottom()" title="Вниз">↓</button>
   <button class="nav-btn" id="scrollTop" onclick="scrollToTop()" title="Вверх">↑</button>
 </div>
 
 <script>
-// ========== БОКОВОЕ МЕНЮ ==========
 const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('mainContent');
 const menuToggleBtn = document.getElementById('menuToggleBtn');
-
 let menuOpen = true;
 
 function toggleMenu(){
@@ -1043,7 +1037,6 @@ function toggleMenu(){
 
 menuToggleBtn.addEventListener('click', toggleMenu);
 
-// На мобильных меню изначально закрыто
 if(window.innerWidth < 768){
   sidebar.classList.add('closed');
   menuToggleBtn.textContent = '☰';
@@ -1051,7 +1044,6 @@ if(window.innerWidth < 768){
   menuOpen = false;
 }
 
-// ========== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ==========
 function showPage(pageId){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + pageId);
@@ -1061,7 +1053,6 @@ function showPage(pageId){
     a.classList.toggle('active', a.dataset.page === pageId);
   });
 
-  // Если перешли на "Файлы" — открыть первую вкладку
   if(pageId === 'files'){
     const tabs = document.querySelectorAll('.tab');
     const panels = document.querySelectorAll('.tab-panel');
@@ -1071,13 +1062,11 @@ function showPage(pageId){
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // На мобильных закрываем меню после выбора
   if(window.innerWidth < 768 && menuOpen){
     toggleMenu();
   }
 }
 
-// ========== ВКЛАДКИ ФАЙЛОВ ==========
 function switchTab(index, btn){
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1086,7 +1075,6 @@ function switchTab(index, btn){
   });
 }
 
-// ========== СЛАЙДЕР ==========
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.slider-dot');
@@ -1115,7 +1103,6 @@ if(slides.length > 0){
   }
 }
 
-// ========== ПРОГРЕСС + КНОПКИ ==========
 const readingProgress = document.getElementById('readingProgress');
 const scrollTopBtn = document.getElementById('scrollTop');
 const scrollDownBtn = document.getElementById('scrollDown');
