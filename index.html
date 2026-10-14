@@ -22,7 +22,7 @@ body{
 .reading-progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(217,206,192,.3);z-index:200}
 .reading-progress-fill{height:100%;background:linear-gradient(90deg,#b87c4b,#d9a87a,#b87c4b);width:0%;transition:width .1s linear}
 
-/* БОКОВОЕ МЕНЮ СЛЕВА */
+/* БОКОВОЕ МЕНЮ */
 .sidebar{
   position:fixed;
   top:0;left:0;
@@ -39,7 +39,6 @@ body{
   flex-direction:column;
 }
 .sidebar.closed{transform:translateX(-100%)}
-
 .sidebar-head{
   padding:0 24px 20px;
   border-bottom:2px dashed #e2d9d0;
@@ -99,7 +98,6 @@ body{
   transition:all .2s;
 }
 .sidebar-phone:hover{background:rgba(192,57,43,.15)}
-
 .sidebar-label{
   padding:0 24px;
   font-family:'Inter',sans-serif;
@@ -145,7 +143,6 @@ body{
   line-height:1.5;
 }
 
-/* КНОПКА СВЕРНУТЬ */
 .menu-toggle-btn{
   position:fixed;
   top:20px;
@@ -169,14 +166,12 @@ body{
 .menu-toggle-btn:hover{background:#faf6f0}
 .menu-toggle-btn.closed{left:20px}
 
-/* ОСНОВНОЙ КОНТЕНТ */
 .main-content{
   margin-left:280px;
   padding:80px 2rem 80px;
   transition:margin-left .35s cubic-bezier(.4,0,.2,1);
 }
 .main-content.closed{margin-left:0}
-
 .wrapper{max-width:900px;margin:0 auto;position:relative;z-index:10}
 .card{background:#fff;border-radius:44px;box-shadow:0 30px 50px -20px rgba(0,0,0,.15);padding:3.5rem 3rem}
 
@@ -390,7 +385,7 @@ body{
   margin-top:.6rem;
 }
 
-/* ЧЁРНАЯ ПЕРЕКИДЫВАЛКА ЛИНИЯ */
+/* ЛИНИЯ */
 .line-logo-block{
   display:block;
   margin-top:1.8rem;
@@ -422,6 +417,42 @@ body{
 .line-logo-sub{font-size:clamp(.55rem,1.2vw,.72rem);letter-spacing:.42em;color:#a0a0a0;text-transform:uppercase;margin-top:.5rem;padding-left:.42em}
 .line-logo-hint{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.9rem,2.2vw,1.05rem);color:#7a7a7a;margin-top:1.1rem;transition:color .3s}
 .line-logo-block:hover .line-logo-hint{color:#00A651}
+
+/* ПРИМЕРЫ РАБОТ */
+.works-title{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:#1e1e1e;
+  font-size:clamp(1.25rem,3.2vw,1.55rem);
+  margin-bottom:1.3rem;
+  padding-bottom:.7rem;
+  border-bottom:2px solid #b8975a;
+  display:block;
+  letter-spacing:-.01em;
+}
+.features-list{
+  list-style:none;
+  margin-top:.8rem;
+}
+.features-list li{
+  position:relative;
+  padding:.5rem 0 .5rem 1.3rem;
+  font-size:clamp(.92rem,2.2vw,1rem);
+  color:#2e2e2e;
+  line-height:1.6;
+  font-weight:400;
+  border-bottom:1px solid #efe9e2;
+}
+.features-list li:last-child{border-bottom:none}
+.features-list li::before{
+  content:'•';
+  position:absolute;
+  left:0;
+  top:.4rem;
+  color:#b8975a;
+  font-weight:700;
+  font-size:1.2em;
+}
 
 /* ПРЕИМУЩЕСТВА */
 .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
@@ -482,7 +513,6 @@ body{
   color:#fff;
   box-shadow:0 8px 20px -6px rgba(192,57,43,.4);
 }
-
 .files-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .file-card{
   background:#fff;
@@ -600,7 +630,7 @@ body{
   text-align:center;
 }
 
-/* КНОПКИ ВВЕРХ / ВНИЗ */
+/* КНОПКИ */
 .nav-buttons{
   position:fixed;
   bottom:24px;right:24px;
@@ -696,6 +726,7 @@ body{
   <ul class="sidebar-nav">
     <li><a onclick="showPage('main')" data-page="main" class="active">Главная</a></li>
     <li><a onclick="showPage('advantages')" data-page="advantages">Наши преимущества</a></li>
+    <li><a onclick="showPage('works')" data-page="works">Примеры наших работ</a></li>
     <li><a onclick="showPage('files')" data-page="files">Файлы</a></li>
     <li><a onclick="showPage('contacts')" data-page="contacts">Контакты</a></li>
   </ul>
@@ -714,7 +745,6 @@ body{
   <!-- ГЛАВНАЯ -->
   <div class="page active" id="page-main">
 
-    <!-- СЛАЙДЕР С ТВОИМИ 3 ФОТО -->
     <div class="slider" id="slider">
       <div class="slider-track">
         <div class="slide active">
@@ -805,6 +835,40 @@ body{
         <div class="line-logo-hint">Перейти на официальный сайт →</div>
       </div>
     </a>
+
+  </div>
+
+  <!-- ПРИМЕРЫ НАШИХ РАБОТ -->
+  <div class="page" id="page-works">
+
+    <section class="report-section">
+      <h2 class="works-title">Примеры наших работ</h2>
+
+      <p>Для подключения к демонстрационным серверам, необходимо обратиться в нашу компанию, мы предоставим Вам необходимый материал и инструкции.</p>
+
+      <p>Для построения системы видеонаблюдения Мы рекомендуем применение серверов видеонаблюдения или видеорегистраторов производства <b>ЛИНИЯ</b> и применением IP камер 6-8Мрх. Рекомендуемая система хорошо масштабируема, удобна в эксплуатации и интуитивно понятна.</p>
+
+      <h3>Система имеет функции:</h3>
+      <ul class="features-list">
+        <li>Удаленное наблюдение в режиме реального времени.</li>
+        <li>Количество сетевых клиентов не ограничено.</li>
+        <li>Не имеет сетевых, административных и функциональных ограничений.</li>
+        <li>Встроенная Аналитика поиска объекта в архиве по заданным параметрам (детекции, цвет, направление движения, детекции лиц и номеров автомобилей).</li>
+        <li>Просмотр видео через различные мобильные устройства.</li>
+        <li>Поддержка двух видеопотоков с различным разрешением.</li>
+        <li>«Многомониторность».</li>
+        <li>Группировка записей с определенных камер на различные диски.</li>
+        <li>Интерфейс управления поворотными камерами (PTZ).</li>
+        <li>Внешнии обработки, в т.ч. для 1С.</li>
+        <li>Цифровой детектор движения.</li>
+        <li>«Оконтуривание».</li>
+        <li>DDNS - доступ к серверу по имени, а не по IP адресу.</li>
+        <li>Продвинутый Облачный сервис, позволяющий вести мониторинг, логирование системы, отправку SMS и e-mail сообщений, передачу изображений на облачный FTP сервер, ретрансляцию видеопотоков с аналоговых и IP-камер.</li>
+        <li>Удобная работа с видеоархивом и его выписки (экспортирования).</li>
+        <li>Удобное администрирование системы.</li>
+      </ul>
+
+    </section>
 
   </div>
 
