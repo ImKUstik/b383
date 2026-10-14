@@ -18,7 +18,6 @@ body{
   background-size:24px 24px;
 }
 
-/* ПРОГРЕСС */
 .reading-progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(217,206,192,.3);z-index:200}
 .reading-progress-fill{height:100%;background:linear-gradient(90deg,#b87c4b,#d9a87a,#b87c4b);width:0%;transition:width .1s linear}
 
@@ -188,8 +187,8 @@ body{
   aspect-ratio:16/9;
 }
 .slider-track{position:relative;width:100%;height:100%}
-.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease, transform 1.2s ease;transform:scale(1.05)}
-.slide.active{opacity:1;transform:scale(1)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease, transform 1.2s ease;transform:scale(1.05);pointer-events:none}
+.slide.active{opacity:1;transform:scale(1);pointer-events:auto}
 .slide img{width:100%;height:100%;object-fit:cover;display:block}
 .slide-caption{
   position:absolute;
@@ -221,6 +220,7 @@ body{
   transition:all .3s;
   padding:0;
 }
+.slider-dot:hover{background:rgba(255,255,255,.8)}
 .slider-dot.active{background:#c0392b;border-color:#fff;transform:scale(1.2)}
 
 /* ТИТУЛ */
@@ -316,7 +316,6 @@ body{
 .report-section p b{color:#b87c4b;font-weight:700}
 .report-section p:last-child{margin-bottom:0}
 
-/* ПРАЙС */
 .price-list{display:grid;gap:.65rem;margin:.5rem 0}
 .price-row{
   display:flex;
@@ -341,7 +340,6 @@ body{
 .price-value.free{color:#2d7a3e}
 .price-value.doc{color:#8b6b4b;font-style:italic;font-size:.95rem}
 
-/* ЦИТАТА */
 .quote{
   background:linear-gradient(135deg,#faf6f0,#f5ede4);
   border-radius:24px;
@@ -385,7 +383,6 @@ body{
   margin-top:.6rem;
 }
 
-/* ЛИНИЯ */
 .line-logo-block{
   display:block;
   margin-top:1.8rem;
@@ -418,7 +415,6 @@ body{
 .line-logo-hint{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.9rem,2.2vw,1.05rem);color:#7a7a7a;margin-top:1.1rem;transition:color .3s}
 .line-logo-block:hover .line-logo-hint{color:#00A651}
 
-/* ПРИМЕРЫ РАБОТ */
 .works-title{
   font-family:'Playfair Display',serif;
   font-weight:700;
@@ -454,7 +450,6 @@ body{
   font-size:1.2em;
 }
 
-/* ПРЕИМУЩЕСТВА */
 .adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
 .adv-item{
   background:#fff;
@@ -487,7 +482,6 @@ body{
 }
 .adv-content p{font-size:.88rem;color:#4b5563;line-height:1.55;font-weight:400;margin:0}
 
-/* ФАЙЛЫ */
 .tabs{
   display:flex;
   gap:8px;
@@ -552,7 +546,6 @@ body{
 .tab-panel{display:none}
 .tab-panel.active{display:block}
 
-/* ВИДЕОАРХИВ */
 .archive-steps{margin-top:1.2rem;padding-top:1.2rem;border-top:1px dashed #e2d9d0}
 .archive-steps ol{list-style:none;counter-reset:step}
 .archive-steps li{
@@ -590,7 +583,6 @@ body{
 }
 .blue-link:hover{background:rgba(192,57,43,.08);padding:0 4px;border-radius:4px}
 
-/* КОНТАКТЫ */
 .contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
 .contact-card{
   background:#fff;
@@ -620,7 +612,6 @@ body{
 .contact-value a{color:#1e1e1e;text-decoration:none;transition:color .2s}
 .contact-value a:hover{color:#c0392b}
 
-/* ФУТЕР */
 .footer-note{
   margin-top:2rem;
   padding-top:1.5rem;
@@ -630,7 +621,6 @@ body{
   text-align:center;
 }
 
-/* КНОПКИ */
 .nav-buttons{
   position:fixed;
   bottom:24px;right:24px;
@@ -659,7 +649,6 @@ body{
 .nav-btn:hover{transform:scale(1.1)}
 .nav-btn:active{transform:scale(.95)}
 
-/* СТРАНИЦЫ */
 .page{display:none}
 .page.active{display:block;animation:pageIn .4s ease}
 @keyframes pageIn{
@@ -667,7 +656,6 @@ body{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* АДАПТИВ */
 @media(max-width:900px){
   .sidebar{width:260px}
   .main-content{margin-left:260px;padding:80px 1.5rem 60px}
@@ -745,6 +733,7 @@ body{
   <!-- ГЛАВНАЯ -->
   <div class="page active" id="page-main">
 
+    <!-- СЛАЙДЕР С АВТОПЕРЕКЛЮЧЕНИЕМ -->
     <div class="slider" id="slider">
       <div class="slider-track">
         <div class="slide active">
@@ -1139,6 +1128,7 @@ function switchTab(index, btn){
   });
 }
 
+// ==================== СЛАЙДЕР С АВТОПЕРЕКЛЮЧЕНИЕМ ====================
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const dots = document.querySelectorAll('.slider-dot');
@@ -1148,25 +1138,43 @@ function goToSlide(n){
   slides.forEach((s, i) => s.classList.toggle('active', i === n));
   dots.forEach((d, i) => d.classList.toggle('active', i === n));
   currentSlide = n;
+}
+
+function nextSlide(){
+  const next = (currentSlide + 1) % slides.length;
+  goToSlide(next);
+}
+
+function startAutoplay(){
   clearInterval(sliderInterval);
   sliderInterval = setInterval(nextSlide, 4000);
 }
 
-function nextSlide(){
-  goToSlide((currentSlide + 1) % slides.length);
+function stopAutoplay(){
+  clearInterval(sliderInterval);
 }
 
+// Запускаем автопрокрутку при загрузке
 if(slides.length > 0){
-  sliderInterval = setInterval(nextSlide, 4000);
+  startAutoplay();
+
+  // Пауза при наведении
   const sliderEl = document.getElementById('slider');
   if(sliderEl){
-    sliderEl.addEventListener('mouseenter', () => clearInterval(sliderInterval));
-    sliderEl.addEventListener('mouseleave', () => {
-      sliderInterval = setInterval(nextSlide, 4000);
-    });
+    sliderEl.addEventListener('mouseenter', stopAutoplay);
+    sliderEl.addEventListener('mouseleave', startAutoplay);
   }
 }
 
+// Клик по точке — ручное переключение + перезапуск автоплея
+document.querySelectorAll('.slider-dot').forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    goToSlide(i);
+    startAutoplay();
+  });
+});
+
+// ==================== ПРОГРЕСС + КНОПКИ ====================
 const readingProgress = document.getElementById('readingProgress');
 const scrollTopBtn = document.getElementById('scrollTop');
 const scrollDownBtn = document.getElementById('scrollDown');
