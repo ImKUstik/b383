@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Бэст Сервис · Видеонаблюдение · Компьютерная техника · Сети</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:#faf7f2;
+  color:#1e1e1e;
+  line-height:1.6;
+  overflow-x:hidden;
+  background-image:radial-gradient(rgba(0,0,0,.02) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+
+/* ============ ПРОГРЕСС ============ */
+.reading-progress{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(217,206,192,.3);z-index:200}
+.reading-progress-fill{height:100%;background:linear-gradient(90deg,#b87c4b,#d9a87a,#b87c4b);width:0%;transition:width .1s linear}
+
+/* ============ БОКОВОЕ МЕНЮ (слева, постоянно открыто) ============ */
+.sidebar{
+  position:fixed;
+  top:0;left:0;
+  width:280px;
+  height:100vh;
+  background:#fff;
+  border-right:1px solid #efe9e2;
+  z-index:1000;
+  transform:translateX(0);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  padding:24px 0 30px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+}
+.sidebar.closed{transform:translateX(-100%)}
+
+.sidebar-head{
+  padding:0 24px 20px;
+  border-bottom:2px dashed #e2d9d0;
+  margin-bottom:16px;
+}
+.sidebar-logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#1e1e1e;
+  cursor:pointer;
+  margin-bottom:16px;
+}
+.sidebar-logo-mark{
+  width:44px;height:44px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#c0392b,#8b1a1a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:1.35rem;
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  box-shadow:0 6px 16px rgba(192,57,43,.4);
+  flex-shrink:0;
+}
+.sidebar-logo-text{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:1.05rem;
+  line-height:1.1;
+}
+.sidebar-logo-text b{color:#c0392b;display:block;font-size:1.2rem}
+.sidebar-logo-text span{
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  font-size:.65rem;
+  color:#9b8b7a;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.sidebar-phone{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  background:rgba(192,57,43,.08);
+  border:1px solid rgba(192,57,43,.2);
+  border-radius:10px;
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:.95rem;
+  color:#c0392b;
+  text-decoration:none;
+  transition:all .2s;
+}
+.sidebar-phone:hover{background:rgba(192,57,43,.15)}
+
+.sidebar-label{
+  padding:0 24px;
+  font-family:'Inter',sans-serif;
+  font-size:.68rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#9b8b7a;
+  font-weight:600;
+  margin-bottom:10px;
+}
+.sidebar-nav{list-style:none;padding:0 12px}
+.sidebar-nav li{margin-bottom:2px}
+.sidebar-nav li a{
+  display:block;
+  padding:12px 16px;
+  text-decoration:none;
+  color:#3a322b;
+  font-size:.92rem;
+  font-weight:500;
+  transition:all .2s;
+  border-left:3px solid transparent;
+  cursor:pointer;
+  border-radius:0 8px 8px 0;
+}
+.sidebar-nav li a:hover{
+  background:#faf6f0;
+  border-left-color:#c0392b;
+  color:#c0392b;
+  padding-left:20px;
+}
+.sidebar-nav li a.active{
+  background:#faf6f0;
+  border-left-color:#c0392b;
+  color:#c0392b;
+  font-weight:600;
+}
+.sidebar-footer{
+  margin-top:auto;
+  padding:20px 24px 0;
+  border-top:1px solid #efe9e2;
+  font-size:.75rem;
+  color:#a79788;
+  line-height:1.5;
+}
+
+/* Кнопка свернуть меню */
+.menu-toggle-btn{
+  position:fixed;
+  top:20px;
+  left:300px;
+  width:40px;
+  height:40px;
+  background:#fff;
+  border:1px solid #efe9e2;
+  color:#c0392b;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
+  z-index:1001;
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  font-weight:700;
+}
+.menu-toggle-btn:hover{background:#faf6f0}
+.menu-toggle-btn.closed{left:20px}
+
+/* ============ ОСНОВНОЙ КОНТЕНТ ============ */
+.main-content{
+  margin-left:280px;
+  padding:80px 2rem 80px;
+  transition:margin-left .35s cubic-bezier(.4,0,.2,1);
+}
+.main-content.closed{margin-left:0}
+
+.wrapper{max-width:900px;margin:0 auto;position:relative;z-index:10}
+.card{background:#fff;border-radius:44px;box-shadow:0 30px 50px -20px rgba(0,0,0,.15);padding:3.5rem 3rem}
+
+/* ============ СЛАЙДЕР ============ */
+.slider{
+  position:relative;
+  width:100%;
+  border-radius:32px;
+  overflow:hidden;
+  margin-bottom:2rem;
+  box-shadow:0 20px 45px -18px rgba(0,0,0,.25);
+  border:1px solid #f0e8df;
+  background:linear-gradient(135deg,#f7f2ec,#e8dcc8);
+  aspect-ratio:16/9;
+}
+.slider-track{position:relative;width:100%;height:100%}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease, transform 1.2s ease;transform:scale(1.05)}
+.slide.active{opacity:1;transform:scale(1)}
+.slide img{width:100%;height:100%;object-fit:cover;display:block}
+.slide-caption{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.75));
+  padding:2.5rem 2rem 1.5rem;
+  color:#fff;
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1rem,2.3vw,1.35rem);
+  line-height:1.3;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+.slide-caption b{
+  display:block;
+  font-weight:700;
+  font-size:.7em;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:#ffd700;
+  margin-bottom:.5rem;
+}
+.slider-dots{position:absolute;bottom:14px;right:18px;display:flex;gap:10px;z-index:5}
+.slider-dot{
+  width:11px;height:11px;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  border:2px solid rgba(255,255,255,.9);
+  cursor:pointer;
+  transition:all .3s;
+  padding:0;
+}
+.slider-dot.active{background:#c0392b;border-color:#fff;transform:scale(1.2)}
+
+/* ============ ТИТУЛ ============ */
+.report-header{
+  text-align:center;
+  margin-bottom:2rem;
+  padding-bottom:1.8rem;
+  border-bottom:2px dashed #e2d9d0;
+}
+.report-header .school{
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+  font-size:.78rem;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  color:#9b8b7a;
+  margin-bottom:1rem;
+}
+.report-header h1{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:clamp(1.7rem,4.5vw,2.7rem);
+  color:#1e1e1e;
+  line-height:1.1;
+  letter-spacing:-.02em;
+  margin-bottom:.6rem;
+}
+.report-header h1 em{
+  font-style:italic;
+  color:#c0392b;
+  text-decoration:underline;
+  text-decoration-thickness:4px;
+  text-decoration-color:#f0d9d0;
+  text-underline-offset:10px;
+}
+.report-header .subtitle{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.4rem);
+  color:#5f4e3c;
+  display:inline-block;
+  padding-left:1rem;
+  border-left:4px solid #c0392b;
+}
+
+/* ============ СЕКЦИИ ============ */
+.report-section{
+  background:#f7f2ec;
+  border-radius:28px;
+  padding:2.2rem;
+  margin-bottom:1.5rem;
+  border:1px solid #ffffff80;
+}
+.report-section h2{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:#1e1e1e;
+  font-size:clamp(1.3rem,3.5vw,1.7rem);
+  margin-bottom:1.3rem;
+  display:flex;
+  align-items:center;
+  gap:.9rem;
+  line-height:1.2;
+}
+.report-section h2 .num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#c0392b,#8b1a1a);
+  color:#fff;
+  border-radius:50%;
+  font-size:.7em;
+  flex-shrink:0;
+  font-weight:800;
+  font-family:'Playfair Display',serif;
+}
+.report-section h3{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  color:#b87c4b;
+  font-size:clamp(1rem,2.7vw,1.2rem);
+  margin:1.4rem 0 .8rem;
+}
+.report-section h3:first-of-type{margin-top:0}
+.report-section p{
+  font-size:clamp(.96rem,2.3vw,1.05rem);
+  color:#2e2e2e;
+  line-height:1.75;
+  margin-bottom:.9rem;
+  font-weight:300;
+}
+.report-section p b{color:#b87c4b;font-weight:700}
+.report-section p:last-child{margin-bottom:0}
+
+/* ============ ПРАЙС ============ */
+.price-list{display:grid;gap:.65rem;margin:.5rem 0}
+.price-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.95rem 1.3rem;
+  background:#fff;
+  border-radius:16px;
+  border:1px solid #f0e8df;
+  transition:all .2s;
+}
+.price-row:hover{transform:translateX(4px);box-shadow:0 8px 20px -8px rgba(0,0,0,.1)}
+.price-name{font-weight:500;font-size:.95rem;color:#2e2e2e;line-height:1.4;flex:1}
+.price-value{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1rem;
+  color:#c0392b;
+  white-space:nowrap;
+}
+.price-value.free{color:#2d7a3e}
+.price-value.doc{color:#8b6b4b;font-style:italic;font-size:.95rem}
+
+/* ============ ЦИТАТА ============ */
+.quote{
+  background:linear-gradient(135deg,#faf6f0,#f5ede4);
+  border-radius:24px;
+  padding:2.3rem 2rem;
+  margin:1.5rem 0 0;
+  border-left:5px solid #c0392b;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(1rem,2.3vw,1.2rem);
+  color:#3a322b;
+  line-height:1.65;
+  text-align:center;
+  position:relative;
+}
+.quote::before{
+  content:'"';
+  position:absolute;
+  top:-1.2rem;left:1rem;
+  font-size:4.5rem;
+  color:#e6d5c2;
+  font-family:'Playfair Display',serif;
+  line-height:1;
+  opacity:.7;
+}
+.quote::after{
+  content:'"';
+  position:absolute;
+  bottom:-2.3rem;right:1rem;
+  font-size:4.5rem;
+  color:#e6d5c2;
+  font-family:'Playfair Display',serif;
+  line-height:1;
+  opacity:.7;
+}
+.quote-author{
+  text-align:center;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  color:#c0392b;
+  margin-top:.6rem;
+}
+
+/* ============ ЧЁРНАЯ ПЕРЕКИДЫВАЛКА ЛИНИЯ ============ */
+.line-logo-block{
+  display:block;
+  margin-top:1.8rem;
+  padding:2.3rem 2rem;
+  background:linear-gradient(135deg,#0a0a0a,#1a1a1a);
+  border-radius:28px;
+  text-decoration:none;
+  text-align:center;
+  border:1px solid #2a2a2a;
+  transition:all .35s;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+.line-logo-block::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 100%,rgba(0,166,81,.25),transparent 60%);
+  opacity:0;
+  transition:opacity .4s;
+}
+.line-logo-block:hover{transform:translateY(-4px);box-shadow:0 20px 45px -12px rgba(0,166,81,.5);border-color:rgba(0,166,81,.5)}
+.line-logo-block:hover::before{opacity:1}
+.line-logo-inner{display:inline-flex;flex-direction:column;align-items:center;gap:.5rem;position:relative;z-index:1}
+.line-logo-text{font-family:'Inter',sans-serif;font-weight:900;font-size:clamp(1.9rem,4.5vw,2.8rem);line-height:1;display:flex;align-items:baseline}
+.line-l{color:#00A651}
+.line-rest{color:#fff}
+.line-logo-sub{font-size:clamp(.55rem,1.2vw,.72rem);letter-spacing:.42em;color:#a0a0a0;text-transform:uppercase;margin-top:.5rem;padding-left:.42em}
+.line-logo-hint{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.9rem,2.2vw,1.05rem);color:#7a7a7a;margin-top:1.1rem;transition:color .3s}
+.line-logo-block:hover .line-logo-hint{color:#00A651}
+
+/* ============ ПРЕИМУЩЕСТВА ============ */
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.adv-item{
+  background:#fff;
+  border-radius:18px;
+  padding:1.3rem 1.4rem;
+  border:1px solid #f0e8df;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  transition:all .25s;
+}
+.adv-item:hover{transform:translateY(-3px);box-shadow:0 12px 24px -10px rgba(0,0,0,.1)}
+.adv-num{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:1.4rem;
+  color:#c0392b;
+  line-height:1;
+  flex-shrink:0;
+  width:40px;
+  letter-spacing:-.02em;
+}
+.adv-content h4{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1rem;
+  color:#1e1e1e;
+  margin-bottom:5px;
+  line-height:1.25;
+}
+.adv-content p{font-size:.88rem;color:#4b5563;line-height:1.55;font-weight:400;margin:0}
+
+/* ============ ФАЙЛЫ ============ */
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:1.4rem;
+  flex-wrap:wrap;
+}
+.tab{
+  padding:10px 22px;
+  background:#fff;
+  border:1px solid #f0e8df;
+  color:#5f4e3c;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:.88rem;
+  cursor:pointer;
+  transition:all .2s;
+  border-radius:50px;
+}
+.tab:hover{border-color:#c0392b;color:#c0392b}
+.tab.active{
+  background:linear-gradient(135deg,#c0392b,#8b1a1a);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 8px 20px -6px rgba(192,57,43,.4);
+}
+
+.files-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.file-card{
+  background:#fff;
+  padding:1.2rem 1.4rem;
+  text-decoration:none;
+  color:#1e1e1e;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border-radius:18px;
+  border:1px solid #f0e8df;
+  transition:all .25s;
+  cursor:pointer;
+}
+.file-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px -10px rgba(0,0,0,.1);border-color:#c0392b}
+.file-card-type{
+  width:46px;height:46px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:.7rem;
+  color:#fff;
+  flex-shrink:0;
+  letter-spacing:.05em;
+}
+.file-card-type.pdf{background:linear-gradient(135deg,#c0392b,#8b1a1a)}
+.file-card-type.doc{background:linear-gradient(135deg,#2c5f8a,#1c3f5f)}
+.file-card-info{flex:1;min-width:0}
+.file-card-name{font-size:.92rem;font-weight:600;color:#1e1e1e;margin-bottom:3px;line-height:1.3}
+.file-card-meta{font-size:.73rem;color:#9b8b7a;letter-spacing:.03em}
+.file-card-arrow{color:#c0392b;font-size:1.05rem;flex-shrink:0;transition:all .2s}
+.file-card:hover .file-card-arrow{transform:translateX(4px)}
+
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ============ ВИДЕОАРХИВ ============ */
+.archive-steps{margin-top:1.2rem;padding-top:1.2rem;border-top:1px dashed #e2d9d0}
+.archive-steps ol{list-style:none;counter-reset:step}
+.archive-steps li{
+  position:relative;
+  padding-left:42px;
+  margin-bottom:14px;
+  counter-increment:step;
+  font-size:.95rem;
+  color:#374151;
+  line-height:1.65;
+}
+.archive-steps li::before{
+  content:counter(step);
+  position:absolute;
+  left:0;top:0;
+  width:28px;height:28px;
+  background:linear-gradient(135deg,#c0392b,#8b1a1a);
+  color:#fff;
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:.85rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+}
+.archive-steps li strong{color:#1e1e1e;font-weight:700}
+.blue-link{
+  color:#c0392b;
+  text-decoration:none;
+  border-bottom:2px solid #c0392b;
+  font-weight:600;
+  transition:all .2s;
+  cursor:pointer;
+}
+.blue-link:hover{background:rgba(192,57,43,.08);padding:0 4px;border-radius:4px}
+
+/* ============ КОНТАКТЫ ============ */
+.contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+.contact-card{
+  background:#fff;
+  border-radius:18px;
+  padding:1.3rem 1.5rem;
+  border:1px solid #f0e8df;
+  text-decoration:none;
+  color:#1e1e1e;
+  transition:all .25s;
+}
+.contact-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px -10px rgba(0,0,0,.1)}
+.contact-label{
+  font-size:.66rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:#9b8b7a;
+  font-weight:600;
+  margin-bottom:8px;
+}
+.contact-value{
+  font-family:'Playfair Display',serif;
+  font-weight:700;
+  font-size:1rem;
+  color:#1e1e1e;
+  line-height:1.5;
+}
+.contact-value a{color:#1e1e1e;text-decoration:none;transition:color .2s}
+.contact-value a:hover{color:#c0392b}
+
+/* ============ ФУТЕР ============ */
+.footer-note{
+  margin-top:2rem;
+  padding-top:1.5rem;
+  border-top:1px solid #efe9e2;
+  font-size:.8rem;
+  color:#a79788;
+  text-align:center;
+}
+
+/* ============ КНОПКИ ВВЕРХ / ВНИЗ ============ */
+.nav-buttons{
+  position:fixed;
+  bottom:24px;right:24px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  z-index:100;
+}
+.nav-btn{
+  width:48px;height:48px;
+  background:linear-gradient(135deg,#c0392b,#8b1a1a);
+  border:2px solid #fff;
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.1rem;
+  border-radius:50%;
+  transition:all .25s;
+  opacity:0;
+  visibility:hidden;
+  box-shadow:0 8px 25px rgba(192,57,43,.4);
+}
+.nav-btn.show{opacity:1;visibility:visible}
+.nav-btn:hover{transform:scale(1.1)}
+.nav-btn:active{transform:scale(.95)}
+
+/* ============ ВКЛАДКИ-СТРАНИЦЫ ============ */
+.page{display:none}
+.page.active{display:block;animation:pageIn .4s ease}
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ============ АДАПТИВ ============ */
+@media(max-width:900px){
+  .sidebar{width:260px}
+  .main-content{margin-left:260px;padding:80px 1.5rem 60px}
+  .menu-toggle-btn{left:280px}
+}
+@media(max-width:768px){
+  .sidebar{
+    width:100%;
+    transform:translateX(-100%);
+    z-index:1002;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .main-content{margin-left:0;padding:80px 1rem 60px}
+  .menu-toggle-btn{left:14px}
+  .menu-toggle-btn.closed{left:14px}
+  .card{padding:2rem 1.4rem;border-radius:32px}
+  .report-section{padding:1.6rem 1.3rem;border-radius:22px}
+  .report-header h1{font-size:1.6rem}
+  .adv-grid{grid-template-columns:1fr}
+  .files-grid{grid-template-columns:1fr}
+  .contacts-grid{grid-template-columns:1fr}
+  .nav-buttons{bottom:18px;right:18px}
+  .nav-btn{width:44px;height:44px}
+  .tab{padding:8px 16px;font-size:.8rem}
+  .slide-caption{padding:1.5rem 1.2rem 1rem;font-size:.95rem}
+}
+@media(max-width:480px){
+  .card{padding:1.5rem 1.1rem;border-radius:26px}
+  .price-row{padding:.8rem 1.1rem;flex-wrap:wrap}
+  .price-name{font-size:.85rem}
+  .price-value{font-size:.9rem}
+  .adv-num{font-size:1.2rem;width:34px}
+  .file-card{padding:1rem 1.1rem;gap:12px}
+  .file-card-type{width:40px;height:40px;font-size:.62rem}
+}
+</style>
+</head>
+<body>
+
+<div class="reading-progress"><div class="reading-progress-fill" id="readingProgress"></div></div>
+
+<!-- КНОПКА СВЕРНУТЬ МЕНЮ -->
+<button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Меню">‹</button>
+
+<!-- БОКОВОЕ МЕНЮ (СЛЕВА) -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <a class="sidebar-logo" onclick="showPage('main')">
+      <div class="sidebar-logo-mark">Б</div>
+      <div class="sidebar-logo-text">
+        <b>Бэст Сервис</b>
+        <span>группа компаний</span>
+      </div>
+    </a>
+    <a href="tel:+73833105764" class="sidebar-phone">+7 (383) 310-57-64</a>
+  </div>
+
+  <div class="sidebar-label">Разделы</div>
+  <ul class="sidebar-nav">
+    <li><a onclick="showPage('main')" data-page="main" class="active">Главная</a></li>
+    <li><a onclick="showPage('advantages')" data-page="advantages">Наши преимущества</a></li>
+    <li><a onclick="showPage('files')" data-page="files">Файлы</a></li>
+    <li><a onclick="showPage('contacts')" data-page="contacts">Контакты</a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    © 2007–2025<br>
+    ООО «Бэст Сервис»<br>
+    b383.ru
+  </div>
+</aside>
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<div class="main-content" id="mainContent">
+<div class="wrapper">
+<div class="card">
+
+  <!-- ================= СТРАНИЦА: ГЛАВНАЯ ================= -->
+  <div class="page active" id="page-main">
+
+    <!-- СЛАЙДЕР -->
+    <div class="slider" id="slider">
+      <div class="slider-track">
+        <div class="slide active">
+          <img src="slider1.jpg" 
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1600&q=80&auto=format&fit=crop'" 
+               alt="Монтаж камеры видеонаблюдения">
+          <div class="slide-caption">
+            <b>Монтаж камер</b>
+            Профессиональная установка на объектах любой сложности
+          </div>
+        </div>
+        <div class="slide">
+          <img src="slider2.jpg" 
+               onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80&auto=format&fit=crop'" 
+               alt="Оборудование для видеонаблюдения">
+          <div class="slide-caption">
+            <b>Оборудование</b>
+            Камеры, серверы, пульты управления и системы записи
+          </div>
+        </div>
+      </div>
+      <div class="slider-dots">
+        <button class="slider-dot active" onclick="goToSlide(0)" aria-label="Слайд 1"></button>
+        <button class="slider-dot" onclick="goToSlide(1)" aria-label="Слайд 2"></button>
+      </div>
+    </div>
+
+    <!-- ТИТУЛ -->
+    <div class="report-header">
+      <div class="school">Бэст Сервис · с 2007 года</div>
+      <h1>Видеонаблюдение,<br>техника и <em>сети</em></h1>
+      <div class="subtitle">работаем с 2007 года · Новосибирск</div>
+    </div>
+
+    <!-- О КОМПАНИИ -->
+    <section class="report-section">
+      <h2><span class="num">1</span>О компании</h2>
+      <p><b>Наша компания работает с 2007 года.</b> Мы оказываем услуги по обслуживанию компьютерной техники, систем видеонаблюдения, проектированию, монтажу систем видеонаблюдения, локальных вычислительных и Wi-Fi сетей.</p>
+      <p>Нами установлено <b>более 8000 камер</b> на объектах разных городов, на постоянном техническом обслуживании у нашей организации находится <b>более 1000 камер</b> и <b>более 300 компьютеров и серверов</b>, смонтировано <b>более сотни километров</b> оптоволоконных и медных линий.</p>
+    </section>
+
+    <!-- ЦЕНА -->
+    <section class="report-section">
+      <h2><span class="num">2</span>Цены на услуги</h2>
+
+      <h3>Видеонаблюдение</h3>
+      <div class="price-list">
+        <div class="price-row"><div class="price-name">Системы видеонаблюдения для жилого сектора и МКД</div><div class="price-value">от 800 ₽/мес</div></div>
+        <div class="price-row"><div class="price-name">Системы видеонаблюдения в лифтах МКД</div><div class="price-value">от 800 ₽/мес</div></div>
+        <div class="price-row"><div class="price-name">Проектирование систем видеонаблюдения</div><div class="price-value doc">Договорная</div></div>
+        <div class="price-row"><div class="price-name">Настройка удалённого доступа</div><div class="price-value free">Бесплатно</div></div>
+        <div class="price-row"><div class="price-name">Модернизация системы (по ТЗ)</div><div class="price-value doc">По ТЗ</div></div>
+        <div class="price-row"><div class="price-name">Обучение работе с системой</div><div class="price-value free">Бесплатно</div></div>
+        <div class="price-row"><div class="price-name">ТО компьютерной техники</div><div class="price-value">от 500 ₽/мес</div></div>
+        <div class="price-row"><div class="price-name">ТО систем видеонаблюдения</div><div class="price-value">от 300 ₽</div></div>
+        <div class="price-row"><div class="price-name">Монтаж камер</div><div class="price-value">от 500 ₽</div></div>
+        <div class="price-row"><div class="price-name">Аренда оборудования</div><div class="price-value">от 800 ₽/мес</div></div>
+      </div>
+
+      <h3>Сети и кабельные системы</h3>
+      <div class="price-list">
+        <div class="price-row"><div class="price-name">Проектирование и монтаж оптоволоконных сетей</div><div class="price-value">от 60 ₽/м</div></div>
+        <div class="price-row"><div class="price-name">Проектирование, монтаж и настройка Wi-Fi сетей</div><div class="price-value">от 500 ₽</div></div>
+        <div class="price-row"><div class="price-name">Монтаж кабеля открытым способом</div><div class="price-value">от 40 ₽/м</div></div>
+      </div>
+    </section>
+
+    <!-- ЦИТАТА -->
+    <section class="report-section">
+      <div class="quote">
+        Не верьте словам ни своим, ни чужим,<br>верьте только делам и своим, и чужим.
+      </div>
+      <div class="quote-author">— Лев Николаевич Толстой</div>
+    </section>
+
+    <!-- ЧЁРНАЯ ПЕРЕКИДЫВАЛКА НА ЛИНИЯ -->
+    <a href="https://devline.ru/" target="_blank" rel="noopener" class="line-logo-block">
+      <div class="line-logo-inner">
+        <div class="line-logo-text">
+          <span class="line-l">Л</span><span class="line-rest">ИНИЯ</span>
+        </div>
+        <div class="line-logo-sub">Система видеонаблюдения</div>
+        <div class="line-logo-hint">Перейти на официальный сайт →</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ================= СТРАНИЦА: ПРЕИМУЩЕСТВА ================= -->
+  <div class="page" id="page-advantages">
+    <div class="report-header">
+      <div class="school">Бэст Сервис · раздел</div>
+      <h1>Наши <em>преимущества</em></h1>
+    </div>
+
+    <section class="report-section">
+      <div class="adv-grid">
+        <div class="adv-item">
+          <div class="adv-num">01</div>
+          <div class="adv-content">
+            <h4>Опыт с 2007 года</h4>
+            <p>Более 18 лет на рынке IT-услуг и систем безопасности.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">02</div>
+          <div class="adv-content">
+            <h4>Проекты любой сложности</h4>
+            <p>От квартиры до городской инфраструктуры и промышленных объектов.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">03</div>
+          <div class="adv-content">
+            <h4>Собственные специалисты</h4>
+            <p>Работы выполняются штатными сотрудниками, без посредников.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">04</div>
+          <div class="adv-content">
+            <h4>Постоянное сопровождение</h4>
+            <p>Техническое обслуживание и оперативное реагирование на объектах.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">05</div>
+          <div class="adv-content">
+            <h4>Прозрачные условия</h4>
+            <p>Фиксированные цены, чёткие сроки и договорная база.</p>
+          </div>
+        </div>
+        <div class="adv-item">
+          <div class="adv-num">06</div>
+          <div class="adv-content">
+            <h4>Дополнительные опции</h4>
+            <p>Настройка удалённого доступа и обучение работе с системой — бесплатно.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= СТРАНИЦА: ФАЙЛЫ (с вкладкой Видеоархив) ================= -->
+  <div class="page" id="page-files">
+    <div class="report-header">
+      <div class="school">Бэст Сервис · раздел</div>
+      <h1><em>Файлы</em></h1>
+      <div class="subtitle">документы · прайс-листы · видеоархив</div>
+    </div>
+
+    <section class="report-section">
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(0, this)">Документы</button>
+        <button class="tab" onclick="switchTab(1, this)">Прайс-листы</button>
+        <button class="tab" onclick="switchTab(2, this)">Получить видеоархив</button>
+      </div>
+
+      <!-- ПАНЕЛЬ 1: ДОКУМЕНТЫ -->
+      <div class="tab-panel active">
+        <div class="files-grid">
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/cwznehv3m28s8wwc44k0swk4gsckw4" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Документ 1</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/044ef6b9089e12ff2fe31f8e0ae879c5d931007d.docx" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type doc">DOC</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Положение о видеонаблюдении</div>
+              <div class="file-card-meta">Документ Word</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/tayrweneuggokwgk0s8ks4kkskgkgw" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Документ 3</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/pj2otv6v6yskksc4csws8oscccgg0c" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Документ 4</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ПАНЕЛЬ 2: ПРАЙС-ЛИСТЫ -->
+      <div class="tab-panel">
+        <div class="files-grid">
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/kspjcuxoe34c88k8sk0wkokkgcok0s" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Прайс-лист 1</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/in8aaq7cqnwcwko0k8w44koogkwg88" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Прайс-лист 2</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/ft3960m8v00s4s8oks04ok8s0gwgk4" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Прайс-лист 3</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+          <a href="http://s.siteapi.org/466c41f8bbd035c/docs/qofn67dy7kgcowsw800gkckw4g840o" target="_blank" rel="noopener" class="file-card">
+            <div class="file-card-type pdf">PDF</div>
+            <div class="file-card-info">
+              <div class="file-card-name">Прайс-лист 4</div>
+              <div class="file-card-meta">Файл для скачивания</div>
+            </div>
+            <div class="file-card-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- ПАНЕЛЬ 3: ВИДЕОАРХИВ -->
+      <div class="tab-panel">
+        <p>Наша компания предоставляет выписку из видеоархива и непосредственный доступ к системе видеонаблюдения по заявлениям граждан либо представителей органов власти.</p>
+        <p>Собственникам многоквартирных домов необходимо обратиться в Управляющую компанию либо к председателю ТСЖ. Представителям органов власти — обратиться по телефонам нашей компании.</p>
+
+        <div class="archive-steps">
+          <p style="margin-bottom:14px"><b>Для получения доступа к системе видеонаблюдения необходимо:</b></p>
+          <ol>
+            <li>Выполнение условий <a class="blue-link" href="http://466c41f8bbd035c.s.siteapi.org/docs/044ef6b9089e12ff2fe31f8e0ae879c5d931007d.docx" target="_blank" rel="noopener">Положения о видеонаблюдении</a></li>
+            <li>Получить <strong>учётную запись</strong> для доступа у администратора системы</li>
+            <li><strong>Выполнить инструкцию</strong> по установке программы для онлайн-трансляции и просмотра видеоархива систем видеонаблюдения</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ================= СТРАНИЦА: КОНТАКТЫ ================= -->
+  <div class="page" id="page-contacts">
+    <div class="report-header">
+      <div class="school">Бэст Сервис · раздел</div>
+      <h1><em>Контакты</em></h1>
+    </div>
+
+    <section class="report-section">
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <div class="contact-label">Адрес</div>
+          <div class="contact-value">630501, Россия, Новосибирск,<br>п. Краснообск, 1/6</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-label">Режим работы</div>
+          <div class="contact-value">Пн–Пт: 09:00–19:00<br>Сб, Вс — выходные</div>
+        </div>
+        <div class="contact-card">
+          <div class="contact-label">Телефоны</div>
+          <div class="contact-value">
+            <a href="tel:+73833105764">+7 (383) 310-57-64</a><br>
+            <a href="tel:+79139490566">+7 (913) 949-05-66</a><br>
+            <a href="tel:+79835105764">+7 (983) 510-57-64</a>
+          </div>
+        </div>
+        <a href="mailto:info@b383.ru" class="contact-card">
+          <div class="contact-label">Электронная почта</div>
+          <div class="contact-value">info@b383.ru</div>
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ФУТЕР -->
+  <div class="footer-note">
+    © 2007–2025 Бэст Сервис · b383.ru · Все права защищены
+  </div>
+
+</div>
+</div>
+</div>
+
+<!-- КНОПКИ ВВЕРХ / ВНИЗ -->
+<div class="nav-buttons">
+  <button class="nav-btn" id="scrollDown" onclick="scrollToBottom()" title="Вниз">↓</button>
+  <button class="nav-btn" id="scrollTop" onclick="scrollToTop()" title="Вверх">↑</button>
+</div>
+
+<script>
+// ========== БОКОВОЕ МЕНЮ ==========
+const sidebar = document.getElementById('sidebar');
+const mainContent = document.getElementById('mainContent');
+const menuToggleBtn = document.getElementById('menuToggleBtn');
+
+let menuOpen = true;
+
+function toggleMenu(){
+  menuOpen = !menuOpen;
+  if(menuOpen){
+    sidebar.classList.remove('closed');
+    mainContent.classList.remove('closed');
+    menuToggleBtn.classList.remove('closed');
+    menuToggleBtn.textContent = '‹';
+  } else {
+    sidebar.classList.add('closed');
+    mainContent.classList.add('closed');
+    menuToggleBtn.classList.add('closed');
+    menuToggleBtn.textContent = '›';
+  }
+}
+
+menuToggleBtn.addEventListener('click', toggleMenu);
+
+// На мобильных меню изначально закрыто
+if(window.innerWidth < 768){
+  sidebar.classList.add('closed');
+  menuToggleBtn.textContent = '☰';
+  menuToggleBtn.classList.remove('closed');
+  menuOpen = false;
+}
+
+// ========== ПЕРЕКЛЮЧЕНИЕ СТРАНИЦ ==========
+function showPage(pageId){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + pageId);
+  if(target) target.classList.add('active');
+
+  document.querySelectorAll('.sidebar-nav li a').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === pageId);
+  });
+
+  // Если перешли на "Файлы" — открыть первую вкладку
+  if(pageId === 'files'){
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach((t,i) => t.classList.toggle('active', i === 0));
+    panels.forEach((p,i) => p.classList.toggle('active', i === 0));
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // На мобильных закрываем меню после выбора
+  if(window.innerWidth < 768 && menuOpen){
+    toggleMenu();
+  }
+}
+
+// ========== ВКЛАДКИ ФАЙЛОВ ==========
+function switchTab(index, btn){
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === index);
+  });
+}
+
+// ========== СЛАЙДЕР ==========
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.slider-dot');
+let sliderInterval = null;
+
+function goToSlide(n){
+  slides.forEach((s, i) => s.classList.toggle('active', i === n));
+  dots.forEach((d, i) => d.classList.toggle('active', i === n));
+  currentSlide = n;
+  clearInterval(sliderInterval);
+  sliderInterval = setInterval(nextSlide, 4000);
+}
+
+function nextSlide(){
+  goToSlide((currentSlide + 1) % slides.length);
+}
+
+if(slides.length > 0){
+  sliderInterval = setInterval(nextSlide, 4000);
+  const sliderEl = document.getElementById('slider');
+  if(sliderEl){
+    sliderEl.addEventListener('mouseenter', () => clearInterval(sliderInterval));
+    sliderEl.addEventListener('mouseleave', () => {
+      sliderInterval = setInterval(nextSlide, 4000);
+    });
+  }
+}
+
+// ========== ПРОГРЕСС + КНОПКИ ==========
+const readingProgress = document.getElementById('readingProgress');
+const scrollTopBtn = document.getElementById('scrollTop');
+const scrollDownBtn = document.getElementById('scrollDown');
+
+function updateButtons(){
+  const st = window.scrollY || document.documentElement.scrollTop;
+  const sh = document.documentElement.scrollHeight - window.innerHeight;
+  const p = sh > 0 ? (st / sh) * 100 : 0;
+  readingProgress.style.width = p + '%';
+  scrollTopBtn.classList.toggle('show', st > 400);
+  scrollDownBtn.classList.toggle('show', sh > 0 && st < sh - 100);
+}
+
+window.addEventListener('scroll', updateButtons);
+window.addEventListener('load', updateButtons);
+window.addEventListener('resize', updateButtons);
+
+function scrollToTop(){ window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function scrollToBottom(){ window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }); }
+</script>
+</body>
+</html>
